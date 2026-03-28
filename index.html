@@ -16,34 +16,37 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             background-color: #1a1a1a;
             font-family: Arial, sans-serif;
         }
 
         h1 {
             color: #fff;
-            margin-bottom: 20px;
+            font-size: 48px;
+            letter-spacing: 8px;
+            margin-bottom: 16px;
         }
 
         canvas {
             background-color: #000;
             border: 3px solid #fff;
             display: block;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         #scoreboard {
             color: #fff;
-            font-size: 32px;
+            font-size: 28px;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         #instructions {
             color: #aaa;
             font-size: 14px;
             text-align: center;
+            line-height: 1.6;
         }
     </style>
 </head>
@@ -52,7 +55,7 @@
     <div id="scoreboard">Player: 0 | Computer: 0</div>
     <canvas id="pong" width="800" height="400"></canvas>
     <div id="instructions">
-        <p>Move your paddle with MOUSE or ARROW KEYS (UP/DOWN)</p>
+        <p>Move your paddle with MOUSE or ARROW KEYS (UP / DOWN)</p>
         <p>Beat the computer AI!</p>
     </div>
 
@@ -61,7 +64,7 @@
         const ctx = canvas.getContext('2d');
         const scoreboard = document.getElementById('scoreboard');
 
-        // Game Objects
+        // Game constants
         const paddleWidth = 10;
         const paddleHeight = 100;
         const ballSize = 10;
@@ -112,7 +115,7 @@
         });
 
         // Mouse Controls
-        document.addEventListener('mousemove', (e) => {
+        canvas.addEventListener('mousemove', (e) => {
             const rect = canvas.getBoundingClientRect();
             const mouseY = e.clientY - rect.top;
             playerPaddle.y = mouseY - playerPaddle.height / 2;
@@ -177,7 +180,7 @@
                 ball.y > playerPaddle.y &&
                 ball.y < playerPaddle.y + playerPaddle.height
             ) {
-                ball.dx = -ball.dx;
+                ball.dx = Math.abs(ball.dx);
                 ball.x = playerPaddle.x + playerPaddle.width + ball.size / 2;
 
                 // Add spin based on where ball hits paddle
@@ -192,7 +195,7 @@
                 ball.y > computerPaddle.y &&
                 ball.y < computerPaddle.y + computerPaddle.height
             ) {
-                ball.dx = -ball.dx;
+                ball.dx = -Math.abs(ball.dx);
                 ball.x = computerPaddle.x - ball.size / 2;
 
                 // Add spin based on where ball hits paddle
@@ -204,15 +207,18 @@
             // Score points
             if (ball.x < 0) {
                 computerScore++;
+                updateScoreboard();
                 resetBall();
             }
 
             if (ball.x > canvas.width) {
                 playerScore++;
+                updateScoreboard();
                 resetBall();
             }
+        }
 
-            // Update scoreboard
+        function updateScoreboard() {
             scoreboard.textContent = `Player: ${playerScore} | Computer: ${computerScore}`;
         }
 
@@ -272,46 +278,5 @@
         // Start the game
         gameLoop();
     </script>
-</body>
-</html><!doctype html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>Pong</title>
-<meta name="generator" content="cmjprous">
-<style>
-body
-{
-   background-color: #FFFFFF;
-   color: #000000;
-   font-family: Arial;
-   font-weight: normal;
-   font-size: 13px;
-   line-height: 1.1875;
-   margin: 0;
-   padding: 0;
-}
-#wb_Text1
-{
-   background-color: transparent;
-   background-image: none;
-   border: 0px solid #C0C0C0;
-   border-radius: 0px;
-   padding: 0;
-   margin: 0;
-   text-align: left;
-}
-#wb_Text1 div
-{
-   text-align: left;
-}
-</style>
-</head>
-<body>
-<div id="wb_Text1" style="position:absolute;left:384px;top:89px;width:1203px;height:92px;z-index:0;">
-<div style="font-family:Arial;font-size:13px;line-height:16px;color:#000000;">
-<div style="text-align:center"><span style="font-size:75px;line-height:88px;"><strong>Pong Game</strong></span></div>
-</div>
-</div>
 </body>
 </html>
